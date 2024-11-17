@@ -24,7 +24,7 @@ const Chat = () => {
       // Add the assistant's response to the chat
       setMessages([
         ...newMessages,
-        { role: "assistant", content: response.data.reply },
+        { role: "assistant", content: response.reply },
       ]);
     } catch (error) {
       console.error("Error sending message:", error);

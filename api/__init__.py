@@ -33,7 +33,8 @@ def chat():
 
         # Tokenize and generate response
         input_ids = tokenizer.encode(formatted_history, return_tensors="pt")
-        chat_history_ids = model.generate(input_ids, max_length=1000, pad_token_id=tokenizer.eos_token_id)
+        # attention_mask = (input_ids != tokenizer.pad_token_id).to(torch.int64) 
+        chat_history_ids = model.generate(input_ids, max_length=500, pad_token_id=tokenizer.eos_token_id)
 
         # Decode and save the response
         response = tokenizer.decode(chat_history_ids[:, input_ids.shape[-1]:][0], skip_special_tokens=True)
@@ -45,4 +46,4 @@ def chat():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
