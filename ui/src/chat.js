@@ -17,7 +17,7 @@ const Chat = () => {
 
     try {
       // Send the message to the Flask server
-      const response = await axios.post("http://127.0.0.1:5000/chat", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/chat`, {
         message: userMessage,
       });
 
