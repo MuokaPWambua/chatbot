@@ -20,11 +20,11 @@ const Chat = () => {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/chat`, {
         message: userMessage,
       });
-      console.log(response.reply )
+      console.log(response )
       // Add the assistant's response to the chat
       setMessages([
         ...newMessages,
-        { role: "assistant", content: response.reply },
+        { role: "assistant", content: response.data.reply },
       ]);
     } catch (error) {
       console.error("Error sending message:", error);
