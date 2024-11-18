@@ -10,11 +10,6 @@ model_name = "gpt2"  # GPT-2 model (you can try gpt2-medium or gpt2-large for be
 tokenizer = GPT2Tokenizer.from_pretrained(model_name)
 model = GPT2LMHeadModel.from_pretrained(model_name)
 
-# Custom response generation: add a company-specific prompt to guide GPT-2 responses
-company_prompt = "You are a customer support bot for NextGenSoftware technology company. \
-Your job is to assist users with their software-related queries, such as application development queries, opening hours \
-payments, Nextgensotware services which include (payment integeration, pos, etims integeration, system upgrades, web development and consoltation), \
-and help them find us through nextgensoft.co.ke. Be polite and professional in your support responses."
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -26,7 +21,11 @@ def chat():
 
     try:
         # Format the input for the model with company-specific context and the user message
-        input_text = company_prompt + "\n" + user_message + "\n"
+        input_text =  f"""At NextGenSoftware technology company we provide services such as mpesa payment integeration, 
+        pos installation, etims integeration, system upgrades, web development and software consoltation. Our openning hours are from 
+        mon-fri 8:00am -7:30pm and you can find us through our website at nextgensoft.co.ke or at our offices at hazina towers. 
+        Now act as a customer support chat bot on behalf of NextGenSoftware company by using the provided information to responding to this customer query. Here is the query {user_message}. 
+        Please limit your response to 150 words and we are not seekin for stuffs"""
 
         # Tokenize the input text
         input_ids = tokenizer.encode(input_text, return_tensors="pt")
@@ -34,11 +33,11 @@ def chat():
         # Generate a response based on the input with controlled length and diversity
         chat_history_ids = model.generate(
             input_ids,
-            max_length=150,  # Limit the response length
+            max_length=200,  # Limit the response length
             pad_token_id=tokenizer.eos_token_id,
             no_repeat_ngram_size=2,  # Prevent repeating n-grams
-            temperature=0.6,  # Control creativity, lower values are more focused
-            top_p=0.7,  # Nucleus sampling, higher values make output more diverse
+            temperature=0.7,  # Control creativity, lower values are more focused
+            top_p=0.9,  # Nucleus sampling, higher values make output more diverse
             top_k=50  # Limits sampling to top-k tokens for diversity
         )
 
