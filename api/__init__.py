@@ -11,7 +11,10 @@ tokenizer = GPT2Tokenizer.from_pretrained(model_name)
 model = GPT2LMHeadModel.from_pretrained(model_name)
 
 # Custom response generation: add a company-specific prompt to guide GPT-2 responses
-company_prompt = "You are a customer support agent for NextGenSoftware technology company. Your job is to assist users with their software-related issues, explain features, payments, services, availability, and help them navigate the platform. Be polite and professional in your responses."
+company_prompt = "You are a customer support bot for NextGenSoftware technology company. \
+Your job is to assist users with their software-related queries, such as application development queries, opening hours \
+payments, Nextgensotware services which include (payment integeration, pos, etims integeration, system upgrades, web development and consoltation), \
+and help them find us through nextgensoft.co.ke. Be polite and professional in your support responses."
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -34,8 +37,8 @@ def chat():
             max_length=150,  # Limit the response length
             pad_token_id=tokenizer.eos_token_id,
             no_repeat_ngram_size=2,  # Prevent repeating n-grams
-            temperature=0.7,  # Control creativity, lower values are more focused
-            top_p=0.9,  # Nucleus sampling, higher values make output more diverse
+            temperature=0.6,  # Control creativity, lower values are more focused
+            top_p=0.7,  # Nucleus sampling, higher values make output more diverse
             top_k=50  # Limits sampling to top-k tokens for diversity
         )
 
